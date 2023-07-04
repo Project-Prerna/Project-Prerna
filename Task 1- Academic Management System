@@ -1,0 +1,129 @@
+CREATE TABLE StudentInfo (
+    STU_ID INT NOT NULL PRIMARY KEY, 
+    STU_NAME VARCHAR(20), 
+    DOB DATE, 
+    PHONE_NO VARCHAR(20), 
+    EMAIL_ID VARCHAR(20), 
+    ADDRESS VARCHAR(200)
+);
+
+Create Table CoursesInfo (
+	Course_ID INT NOT NULL Primary Key, 
+	COURSE_NAME Varchar(20), 
+	COURSE_INSTRUCTOR_NAME Varchar(20)
+);
+
+Create Table EnrollementInfo (ENROLLMENT_ID INT NOT NULL PRIMARY KEY, 
+    STU_ID INT,
+    COURSE_ID INT,
+    ENROLL_STATUS VARCHAR(20),
+    FOREIGN KEY (STU_ID) REFERENCES StudentInfo(STU_ID), 
+    FOREIGN KEY (COURSE_ID) REFERENCES CoursesInfo(COURSE_ID));
+	
+	
+	INSERT INTO StudentInfo VALUES (1, 'Guru', '7-MAY-90', '9846794380', 'Guru@gmail.com', 'KOLKATA'),
+    (2, 'Prerna', '11-NOV-89', '56373920282', 'Prerna@gmail.com', 'Delhi'),
+    (3, 'Sita', '17-JAN-93', '542547905', 'Sita@gmail.com', 'Kolkata'),
+    (4, 'Anurag', '24-JAN-93', '6758393023', 'Anurag@gmail.com', 'Mumbai'),
+    (5, 'Lila', '15-FEB-87', '567483903', 'Lila@gmail.com', 'mangalore'),
+    (6, 'Mahima', '06-DEC-92', '789054357', 'Mahima@gmail.com','coimbaitore'),
+    (7, 'akash', '29-AUG-84', '674567890', 'akash@gmail.com','Mumbai'),
+    (8, 'Shruti', '31-JUL-83', '6758390246', 'Shruti@gmail.com','Kolkata'),
+    (9, 'Aprajita', '07-JAN-82', '8564738935', 'Aprajita@gmail.com','Mumbai'),
+    (10, 'Ashmita', '20-DEC-85', '9985438561', 'Ashmita@gmail.com','Kolkata')
+;
+
+INSERT INTO CoursesInfo VALUES (001, 'SQL', 'Shubham'),
+    (002, 'python', 'Prachi'),
+    (003, 'R', 'Sagar'),
+    (004, 'HTML', 'Karen'),
+    (005, 'CSS', 'Jatin'),
+    (006, 'Dev Ops', 'Sourav'),
+    (007, 'Power BI', 'Yogi'),
+    (008, 'Hadoop','Swaroop'),
+    (009, 'Advanced SQL', 'sonu'),
+	(010, 'Advanced Python', 'Mohit')
+	 
+;
+
+INSERT INTO EnrollementInfo VALUES
+    (11,1, 001, 'Enrolled'),
+    (12,2, 010, 'Not Enrolled'),
+    (13,3, 002, 'Enrolled'),
+    (14,1, 007,  'Enrolled'),
+    (15, 4, 003,'Enrolled'),
+    (16,5, 004, 'Not Enrolled'),
+    (17, 6, 005, 'Enrolled'),
+    (18, 7, 006, 'Not Enrolled'),
+    (19, 8, 008, 'Enrolled'), 
+    (20, 9, 009 , 'Enrolled'),
+    (21, 10, 010 , 'Enrolled'),
+    (22, 10 , 009 , 'Enrolled'),
+    (23, 2, 001, 'Enrolled'),
+    (24, 2, 002, 'Enrolled'),
+    (25, 3, 010, 'Not Enrolled'),
+    (26, 6, 009,  'Enrolled'),
+    (27, 6, 008, 'Enrolled'),
+    (28, 7, 007 , 'Enrolled'),
+    (29, 7, 009, 'Enrolled'),
+    (30, 6, 004, 'Not Enrolled')
+;
+
+SELECT a.STU_NAME, a.PHONE_NO, a.EMAIL_ID, a.ADDRESS, b.ENROLL_STATUS
+FROM StudentInfo a
+INNER JOIN EnrollementInfo b ON a.STU_ID = b.STU_ID;
+
+
+SELECT a.STU_ID, a.STU_NAME, c.COURSE_NAME, b.ENROLL_STATUS
+FROM StudentInfo a
+INNER JOIN EnrollementInfo b ON a.STU_ID = b.STU_ID
+INNER JOIN CoursesInfo c ON c.COURSE_ID = b.COURSE_ID
+WHERE a.STU_ID = 1;
+
+SELECT COURSE_NAME, COURSE_INSTRUCTOR_NAME
+FROM CoursesInfo
+
+SELECT COURSE_NAME, COURSE_INSTRUCTOR_NAME
+FROM CoursesInfo
+WHERE COURSE_ID = 001;
+
+SELECT COURSE_NAME, COURSE_INSTRUCTOR_NAME
+FROM CoursesInfo
+WHERE COURSE_ID IN (001,003,006);
+
+SELECT * FROM StudentInfo;
+
+SELECT * FROM StudentInfo WHERE STU_NAME = 'Sita'
+
+SELECT c.COURSE_NAME, COUNT (*) as Number_of_enrolled_students
+FROM CoursesInfo c
+LEFT JOIN EnrollementInfo b ON c.COURSE_ID = b.COURSE_ID
+WHERE b.Enroll_status = 'Enrolled'
+GROUP BY c.COURSE_NAME
+
+SELECT a.STU_NAME
+FROM StudentInfo a
+INNER JOIN EnrollementInfo b ON a.STU_ID = b.STU_ID
+INNER JOIN CoursesInfo c ON c.COURSE_ID =b.COURSE_ID
+WHERE b.Enroll_status = 'Enrolled'
+AND c.COURSE_NAME = 'Advanced SQL'
+
+SELECT c.COURSE_INSTRUCTOR_NAME, COUNT (*) as mber_of_enrolled_students
+FROM CoursesInfo c
+JOIN EnrollementInfo b ON c.COURSE_ID = b.COURSE_ID
+WHERE b.Enroll_status = 'Enrolled'
+GROUP BY c.COURSE_INSTRUCTOR_NAME;
+
+SELECT a.STU_NAME, COUNT (*) AS Number_of_enrolled_students
+FROM StudentInfo a
+JOIN EnrollementInfo b ON b.STU_ID = a.STU_ID
+WHERE b.Enroll_status = 'Enrolled'
+GROUP BY a.STU_NAME
+HAVING COUNT (*) > 1;
+
+SELECT c.COURSE_NAME, COUNT (*) as Number_of_enrolled_srudents
+FROM CoursesInfo c
+LEFT JOIN EnrollementInfo b ON c.COURSE_ID = b.COURSE_ID
+WHERE b.Enroll_status = 'Enrolled'
+GROUP BY c.COURSE_NAME
+ORDER BY Number_of_enrolled_srudents DESC;
