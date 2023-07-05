@@ -1,0 +1,105 @@
+---------1) Database creation named "EventManagement". Create tables for Event, Attendees and Registrations.
+
+CREATE TABLE Event (
+	Event_Id INT NOT NULL PRIMARY KEY,
+	Event_Name VARCHAR (20),
+	Event_Date DATE,
+	Event_Location VARCHAR (20),
+	Event_Type VARCHAR(100));
+CREATE TABLE Attendees (
+	Attendee_Id INT NOT NULL PRIMARY KEY,
+	Attendee_Name VARCHAR (20),
+	Attendee_Phone NUMERIC,
+	Attendee_Email VARCHAR (20),
+	Attendee_City TEXT);
+
+CREATE TABLE Registrations (
+	Registration_Id INT NOT NULL PRIMARY KEY,
+	Event_Id INT,
+	Attendee_Id INT,
+	Registration_Date DATE,
+	Registration_Amount INT,
+	FOREIGN KEY (Event_Id) REFERENCES Event(Event_Id) ON DELETE CASCADE, 
+    	FOREIGN KEY (Attendee_Id) REFERENCES Attendees(Attendee_Id) ON DELETE CASCADE
+);
+
+
+
+
+-----------------2) Data Creation- Insert values in Event, Attendees and Registrations tables.
+
+INSERT INTO Event (Event_Id, Event_Name, Event_Date, Event_Location, Event_Type)
+VALUES
+    (1, 'Sufi', '2023-06-01', 'Jaisalmer', 'Sufi performance'),
+    (2, 'Instrumental Show', '2023-06-02', 'Jaisalmer', 'Instrumental performance'),
+    (3, 'Trade fair', '2023-06-03', 'Jaisalmer', 'Trade fair for all goods'),
+    (4, ‘Book fair’, '2023-06-04', 'Jaisalmer', ‘Display of Books on sale’),
+    (5, 'Presentation', '2023-06-05', 'Jaisalmer', 'Presentation on Plastic waste'),
+	(6, 'International cuisine', '2023-06-06', 'Jaisalmer', ‘Workshop on International cuisine and raw materials’),
+	(7, 'Tech workshop', '2023-06-07', 'Jaisalmer', 'Tech Workshop in AI'),
+	(8, ‘Regional Dance show’, '2023-06-08', 'Jaisalmer', ‘Regional Dance performance'),
+	(9, ‘Kids Zone’, '2023-06-09', 'Jaisalmer', ‘Kids time Zone’),
+	(10, ‘Sand Tea’, '2023-06-10', 'Jaisalmer', ‘Sand Tea to relieve stress’)
+;
+
+INSERT INTO Attendees (Attendee_Id, Attendee_Name, Attendee_Phone, Attendee_Email, Attendee_City)
+VALUES
+    	(11, 'Sagar', 9846794380, 'Sagar@gmail.com', 'chennai'),
+    	(12, 'Mohit', 56373920282, 'Mohit@gmail.com', 'pondichery'),
+    	(13, 'Prerna', 542547905, 'Prerna@gmail.com', 'chennai'),
+    	(14, 'Shruti', 6758393023, 'Shruti.com', 'Bangalore'),
+    	(15, ‘Akash’, 567483903, 'sam@gmail.com', 'Madurai'),
+    	(16, 'Aprajita', 789054357, 'Aprajita@gmail.com','Coimbaitore'),
+    	(17, 'Gopal', 674567890, 'Gopal@gmail.com','Bangalore'),
+    	(18, 'Aarti', 6758390246, 'Aarti@gmail.com','Chennai'),
+    	(19, 'Swaroop', 8564738935, 'Swaroop@gmail.com','Bangalore'),
+    	(20, 'Sarita', 9985438561, 'Sarita@gmail.com','Chennai')
+		
+;
+    	
+INSERT INTO Registrations (Registration_Id, Event_Id, Attendee_Id, Registration_Date, Registration_Amount)
+VALUES
+	(001, 1, 11, '2023-06-1', 1500),
+ 	(002, 2, 12, '2023-06-2', 2000),
+	(003, 3, 13, '2023-06-3', 1800),
+ 	(004, 4, 14, '2023-06-4', 2500),
+	(005, 5, 15, '2023-06-5', 1000),
+	(006, 6, 16, '2023-06-6', 1200),
+	(007, 7, 17, '2023-06-7', 1400),
+	(008, 8, 18, '2023-06-8', 1500),
+	(009, 9, 19, '2023-06-9', 1600),
+	(010, 10, 20, '2023-06-10', 1900),
+	(011, 10, 11, '2023-06-11', 1500),
+	(012, 1, 15, '2023-06-12', 1000)
+	;
+
+------------3) Manage Event details
+   ------a) Insert new event
+INSERT INTO Event VALUES (11, ‘Camel ride’, '2023-08-5', 'Jaisalmer', ‘Camel ride competition');
+
+   ------b ) Updating event information
+
+UPDATE Event
+SET Event_Date = '2023-06-02', 
+Event_Type = 'Dance',
+Event_Location = 'Tanot'
+WHERE Event_Id = '1'; 
+
+   ------C) Deleting an event
+
+DELETE FROM Event WHERE Event_Id = '2';
+
+   ------4) Manage Track attendees & Handle Event
+   ------a) Insert new attendee
+
+INSERT INTO Attendees VALUES (21, 'Ranbir', 9856789766, 'Ranbir@gmail.com', 'Kerala');
+
+   ------b) Registering attendee for event
+
+INSERT INTO Registrations VALUES (014, 6, 18, '2023-06-6', 1200);
+
+---------5) Develop queries to retrieve event information, generate attendees list and calculate event attendees statistics
+SELECT a.Event_Name, a.Event_Date, a.Event_Location, a.Event_Type, COUNT(b.Attendee_Id) AS No_Attendee
+FROM Event a
+LEFT JOIN Registrations b ON a.Event_Id = b.Event_Id
+GROUP BY a.Event_Name, a.Event_Date, a.Event_Location, a.Event_Type;
