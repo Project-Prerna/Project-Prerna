@@ -1,0 +1,69 @@
+------------1. Create a database named "Student_database". Create a table called "Student_table".
+
+CREATE TABLE Student_table (
+	Student_id INT NOT NULL PRIMARY KEY, 
+	Stu_name TEXT,
+	Department TEXT,
+	Email_id TEXT,
+	Phone_no NUMERIC,
+	Address TEXT,
+	Date_of_birth DATE,
+	Gender TEXT,
+	Major TEXT,
+	GPA NUMERIC,
+	Grade TEXT
+);
+
+-----------2) Insert 10 Arjunple records into the "Student_table" using INSERT command.
+
+INSERT INTO Student_table (Student_id, Stu_name, Department, Email_id, Phone_no, Address, Date_of_birth, Gender, Major, GPA, Grade)
+VALUES
+  	(1, 'Sreeram', 'SCIENCE', 'Sreeram@gmail.com', 9846794380, 'CHENNAI', '7-MAY-90', 'Male', 'SCIENCE', 9, 'A'),
+    (2, 'Dinesh', 'Mathematics', 'Dinesh@gmail.com', 56373920282, 'Pondy', '11-NOV-89', 'Male', 'Mathematics', 7, 'B'),
+    (3, 'Sita', 'Physics', 'Sita@gmail.com', 542547905, 'CHENNAI', '17-JAN-93', 'Female', 'Physics', 4.9, 'E'),
+	(4, 'Pooja', 'IT', 'Pooja@gmail.com', 6758393023, 'Bangalore', '24-JAN-93', 'Female', 'IT', 8.2, 'A'),
+	(5, 'Arjun', 'SST', 'Arjun@gmail.com', 567483903, 'Madurai', '15-FEB-87', 'Male', 'SST', 6.9, 'C'),
+	(6, 'mahima', 'ECE', 'mahima@gmail.com', 789054357, 'Coimbaitore', '06-DEC-92', 'Female', 'ECE', 1, 'F'),
+    (7, 'Akash', 'Civil', 'Akash@gmail.com', 674567890, 'Bangalore', '29-AUG-84', 'Male', 'Civil', 5.6, 'D'),
+    (8, 'Priyanka', 'Chemical', 'Priyanka@gmail.com', 6758390246, 'Chennai', '31-JUL-83', 'Female', 'Chemical', 8.9, 'B'),
+    (9, 'Sagar', 'Physics', 'Sagar@gmail.com', 8564738935, 'Bangalore', '07-JAN-82', 'Male', 'Physics', 3, 'E'),
+    (10, 'Gopal', 'Mathematics', 'Gopal@gmail.com', 9985438561, 'Chennai', '20-DEC-85', 'Male', 'Mathematics', 2.5, 'F')
+;
+
+----------- 3. Develop a query to retrieve all students' information from "Student_table" and sort them in descdending order by their grade.
+SELECT * FROM Student_table
+ORDER BY Grade DESC;
+
+-----------4. Implement a query to retrieve information about all male students from the "Student_table".
+SELECT * FROM Student_table
+WHERE Gender = 'Male';
+
+-----------5. Create a query to fetch the details of students who have a GPA less than 5.0 from the "Student_table".
+SELECT * FROM Student_table
+WHERE GPA < 5.0;
+
+----------6. Write an update statement to modify the e-mail and grade of a student with a specific ID in the "Student_table".
+UPDATE Student_table
+SET Email_id = 'Sita@gmail.com', Grade = 'D'
+WHERE Student_id = 3;
+-----below query is to validate the above update changes
+SELECT * FROM Student_table
+WHERE Student_id = 3;
+
+----------7. Create a query to retrieve the names and ages of all students who have grade "B" from the "Student_table".
+SELECT Stu_name, EXTRACT(YEAR FROM AGE(CURRENT_DATE, Date_of_birth)) as Student_age
+FROM Student_table
+WHERE Grade = 'B';
+
+-----------8. Create a query to group the "Student_table" by the "Department" and "Gender" columns and calculate the average GPA for each combination.
+SELECT Department, Gender, AVG (GPA) as Average_GPA
+FROM Student_table
+GROUP BY Department, Gender;
+
+----------9. Rename the "Student_table" to "Student_info" using the appropiate SQL statement.
+ALTER TABLE Student_table RENAME TO Student_info;
+
+----------10. Write a query to retrieve the name of the student with the highest GPA from the "Student_info" table.
+SELECT Stu_name
+FROM Student_info
+WHERE GPA = (SELECT MAX(GPA) FROM Student_info);
