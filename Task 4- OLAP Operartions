@@ -1,0 +1,62 @@
+4) OLAP Operation
+----------1) creation of sales)sample table
+CREATE TABLE Sales_sample (
+	Product_Id INT NOT NULL PRIMARY KEY,
+	Region VARCHAR (50),
+	Date DATE,
+	Sales_amount INT
+);
+
+----------2) Data creation – Insertion of 10 sample data
+INSERT INTO Sales_sample (Product_Id, Region, Date, Sales_amount)
+VALUES 	(1, 'Bengal', '2023-06-01', 5000),
+		(2, 'Gujarat', '2023-06-02', 1500),
+		(3, 'Delhi', '2023-06-03', 1500),
+		(4, 'Karnataka', '2023-06-04', 3000),
+		(5, 'Karnataka', '2023-06-05', 7500),
+		(6, 'Delhi', '2023-06-06', 3500),
+		(7, 'Bengal', '2023-06-07', 3500),
+		(8, 'Gujarat', '2023-06-08', 3000),
+		(9, 'Bengal', '2023-06-09', 3700),
+		(10, 'Bengal', '2023-06-10', 5900)
+;
+
+------3) OLAP Operation
+-------- a) Write a query to perform drill down from region to product level to understand sales performance.
+SELECT Product_Id, Region, SUM (Sales_amount) AS sales_performance
+FROM Sales_sample
+GROUP BY Product_Id, Region;
+---------- b) Write a query to perform roll up from product to region level to view total sales by region.
+SELECT Region, SUM (Sales_amount) AS Total_sales
+FROM Sales_sample
+GROUP BY Region;
+
+---------- c) Write a query to explore sales data from different perspectives, such as product, region and date.
+
+SELECT Product_Id, Region, Date, SUM (Sales_amount) AS sales
+FROM Sales_sample
+GROUP BY Product_Id, Region, Date;
+
+-------- d) Write a query to slice the data to view sales for a particular region or date range.
+
+SELECT Date, SUM (Sales_amount) AS sales
+FROM Sales_sample
+WHERE Date = '2023-06-10'
+GROUP BY Date;
+
+Or 
+SELECT Region, SUM (Sales_amount) AS sales
+FROM Sales_sample
+WHERE Region = 'Karnataka'
+GROUP BY Region;
+
+
+
+
+
+
+-------e) e) Write a query to view sales for a specific combination of product, region and date.
+
+SELECT Product_Id, Region, Date, Sales_amount
+FROM Sales_sample
+WHERE Product_Id = 3 AND Region = 'Delhi' AND Date = '2023-06-03';
